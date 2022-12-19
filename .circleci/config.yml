@@ -1,6 +1,9 @@
 # This config is equivalent to both the '.circleci/extended/orb-free.yml' and the base '.circleci/config.yml'
 version: 2.1
 
+orbs:
+  slack: circleci/slack@4.12.0
+
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -59,6 +62,10 @@ jobs:
       - save_cache:
             paths: [backend/node_modules]
             key: backend-build
+      - slack/notify:
+          event: fail
+          mentions: '@longpb'
+          template: basic_fail_1
 
   test-frontend:
     docker:
@@ -117,7 +124,7 @@ jobs:
             npm audit fix --audit-level=critical --force
             npm audit fix --force
             npm audit --audit-level=critical
-            npm audit fix
+            npm audit fix    
 
 workflows:
   default:

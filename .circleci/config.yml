@@ -206,7 +206,7 @@ jobs:
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - slack/notify:
-          branch_pattern: circleci-project-setup
+          branch_pattern: master
           event: fail
           template: basic_fail_1
 
@@ -259,6 +259,6 @@ workflows:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
           filters:
             branches:
-              only: [circleci-project-setup]
+              only: [master]
       - configure-infrastructure:
           requires: [deploy-infrastructure]

@@ -255,7 +255,7 @@ jobs:
           command: |
             cat .circleci/ansible/inventory.txt
             export ANSIBLE_HOST_KEY_CHECKING=False
-            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
+            ansible-playbook .circleci/ansible/configure-server.yml -i .circleci/ansible/inventory.txt --private-key .circleci/ansible/udapeople.pem
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 

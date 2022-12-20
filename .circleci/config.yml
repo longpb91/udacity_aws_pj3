@@ -210,6 +210,31 @@ jobs:
           event: fail
           template: basic_fail_1
 
+  configure-infrastructure:
+    docker:
+      # Docker image here that supports Ansible
+      - image: amazon/aws-cli
+    steps:
+      # Checkout code from git
+      - checkout
+      # Add ssh keys with fingerprint
+      - add_ssh_key:
+          fingerprints: ['d3:5d:54:a3:5c:cd:f2:c6:df:66:1c:41:27:89:70:01']
+      # attach workspace
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            pip install awscli
+            apk add --update ansible
+      - run:
+          name: Configure server
+          command: |
+            cd .circleci/ansible
+            cat inventory.txt
+            ansible-playbook -i inventory.txt configure-server.yml
+      # Here's where you will add some code to rollback on failure 
 
 workflows:
   default:
@@ -229,3 +254,5 @@ workflows:
           filters:
             branches:
               only: [circleci-project-setup]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]

@@ -219,11 +219,11 @@ jobs:
       - checkout
       # Add ssh keys with fingerprint
       - add_ssh_keys:
-          fingerprints: ['d3:5d:54:a3:5c:cd:f2:c6:df:66:1c:41:27:89:70:01']
+          fingerprints: ['dd:e4:2f:77:a0:34:21:ba:51:5f:8a:cd:26:72:f3:f9']
       # attach workspace
       - attach_workspace:
           at: ~/
-          
+
       - run:
           name: Install dependencies
           command: |

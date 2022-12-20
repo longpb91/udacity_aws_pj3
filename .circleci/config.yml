@@ -122,9 +122,7 @@ jobs:
             cd backend
             npm i
             npm audit fix --audit-level=critical --force
-            npm audit fix --force
-            npm audit --audit-level=critical
-            npm audit fix    
+      
 
 workflows:
   default:

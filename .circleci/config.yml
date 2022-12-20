@@ -70,10 +70,10 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
-      - slack/notify:
-          event: fail
-          mentions: '@longpb'
-          template: basic_fail_1
+      # - slack/notify:
+      #     event: fail
+      #     mentions: '@longpb'
+      #     template: basic_fail_1
 
   test-frontend:
     docker:
@@ -190,9 +190,12 @@ jobs:
           command: |
             echo "[web]" > .circleci/ansible/inventory.txt
             aws ec2 describe-instances \
-            --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --filters "Name=tag:project,Values=udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
-            --output text >> .circleci/ansible/inventory.txt
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --filters "Name=tag:project,Values=udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --output text >> .circleci/ansible/inventory.txt
+            pwd
+            ls -lA
+
       - run:
           name: Add .env vars to backend distro
           command: |
@@ -253,9 +256,11 @@ jobs:
       - run:
           name: Configure server
           command: |
+            pwd
+            ls
             cat .circleci/ansible/inventory.txt
             export ANSIBLE_HOST_KEY_CHECKING=False
-            ansible-playbook .circleci/ansible/configure-server.yml -i .circleci/ansible/inventory.txt
+            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml 
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
